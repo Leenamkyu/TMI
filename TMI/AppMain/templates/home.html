@@ -1,10 +1,9 @@
-<!DOCTYPE html>
-<html lang="ko">
-<head>
-    <meta charset="UTF-8">
-    <title>TMI</title>
-</head>
-<body>
+{% extends 'base.html' %}
+
+{% block contents %}
     <h1> TMI Demo </h1>
-</body>
-</html>
+
+    <a href="#"> 동행자 모집 게시판 </a> <br>
+    <a href="#"> 여행 코스 추천 게시판 </a> <br>
+    <a href="{% url 'userboard_main' %}"> 자유 게시판 </a> <br>
+{% endblock %}
