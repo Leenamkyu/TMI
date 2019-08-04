@@ -8,11 +8,11 @@ def detail(request):
     pass
 
 @login_required
-def create(request):
+def new(request):
     return render(request, 'Userboard_new.html')
 
 @login_required
-def new(request):
+def create(request):
     pass
 
 def update(request):

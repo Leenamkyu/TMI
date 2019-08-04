@@ -2,8 +2,6 @@
 from django.contrib import admin
 from django.urls import path, include
 import AppMain.views
-import AppUserboard
-import AppAccount
 
 
 urlpatterns = [
@@ -12,4 +10,5 @@ urlpatterns = [
     path('userboard/', include('AppUserboard.urls')),       # Userboard page
     path('accounts/', include('AppAccount.urls')),          # signup
     path('accounts/',include('django.contrib.auth.urls')),  # login and logout
+    path('recommend/', include('AppRecommend.urls')),       # recommend page
 ]
