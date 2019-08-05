@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<form method='POST' action="{%url 'userboard_new' %}" enctype="multipart/form-data">
+<form method='POST'>
     {% csrf_token %}
     <table>
         {{form.as_table}}

@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>title : {{board_detail.title}}</h2>
+<h3>text : {{board_detail.text}}</h3><br>
+
+{% if board_detail.image%}
+<img src="{{board_detail.image.url}}" style="max-width: 50%; height: auto;" alt="사진">
+{% endif %}
+
+<p>{{board_detail.created}}에 작성됨</p>
+
+<br>
+
+<form action= "{%url 'userboard_delete' board_detail.id %}" method="POST">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-danger">삭제</button>
+</form>
+
+<a href="{%url 'userboard_update' board_detail.id %}">수정</a>
+<br><br>
+<hr>
+<h3>Leave a Comment:</h3>
+
+<form method="POST">
+    {% csrf_token %}
+    <div class="form-group">{{ comment_form }}</div>
+    <button type="submit" class="btn btn-primary">Submit</button>
+</form>
+    
+<br>
+    <h3>댓글</h3>
+    {% for comment in comments %}
+    author : {{ comment.author }} 
+    <br>text : {{ comment.text }}
+    created : {{ comment.created }}
+    <br><br>
+    {% empty %}
+    <p>No comments</p>
+    {% endfor %}
+
+<a href="{%url 'userboard_main' %}">목록으로</a>
+{% endblock %}
