@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{% block content%}
+<h1>검색결과 화면</h1>
+<h3>검색 내역: {{search}}</h3>
+<hr>
+{% if result_list.count == 0 %} <!--검색결과가 없을 경우-->
+    <h1>검색결과가 없습니다.</h1>
+{% else %}                      <!--검색결과가 있을 경우-->
+    {% for companion in result_list %}
+        <h1>{{companion.title}}</h1>
+        <p>{{companion.pub_date}}</p>
+        <p>여행 국가: {{companion.country}}            도시 : {{companion.city}}</p>
+        <p>버킷 리스트: {{companion.bucket_list}}</p>
+        <p>{{companion.summary}}</p>
+
+       <!-- chat, update, delete 버튼 추가하기  -->
+
+    {% endfor %}
+{% endif%}
+
+<form action="{% url 'companion_main' %}">
+    <input type="submit" value="목록">
+</form>
+{% endblock %}

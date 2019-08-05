@@ -1,0 +1,73 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1> 동행 모집 게시판</h1> <hr>
+<h3> 동행자 검색</h3>
+
+
+<form action="{% url 'companion_search'%}">
+    여행지: <input type="text" name="country">     
+    도시:  <input type="text" name="city"><br><br>
+    분류:  <select name="category" id=""><!--모델에 추가해야할 부분1-->
+            <option value="음식">음식</option>
+            <option value="액티비티">액티비티</option>
+            <option value="관광">관광</option>
+            <option value="힐링">힐링</option>
+           </select>
+    버킷리스트: <input type="text" name="bucket_list"> <br><br>
+    기간:  <input type="text" name="destination"> ~ <input type="text" name="#"><br><br> <!--모델에 추가해야할 부분1-->
+    <input type="submit" value="검색">
+</form>
+<hr>
+
+<p>Total: {{companions.count}}</p>
+{% for companion in posts %}
+    <h1>{{companion.title}}</h1>
+    <p>작성자:       작성시간: {{companion.pub_date}}</p>
+    <p>여행 국가: {{companion.country}}            도시 : {{companion.city}}</p>
+    <p>버킷 리스트: {{companion.bucket_list}}</p>
+    <p>{{companion.summary}}</p>
+    
+    {% if user.is_authenticated %} 
+
+        <!-- chat form의 action에 url 주기! -->
+        <div style = "float:left; margin-right: 10px"> <!--이부분만 스타일 줌-->  
+            <form action="">
+                <input type="submit" value = "Chat">
+            </form><br>
+        </div>
+
+        
+        <div style = "float:left; margin-right: 10px"><!--이부분만 스타일 줌-->  
+            <form action="{% url 'companion_update' companion.id %}">
+                <input type="submit" value = "update">
+            </form>
+        </div>
+       
+        <form action="{% url 'companion_delete' companion.id %}">
+            <input type="submit" value = "Delete">
+        </form>
+    
+    {% endif %}
+    <br>
+{% endfor %}
+
+{% if user.is_authenticated %}
+    <a href="{% url 'companion_new'%}">글 작성</a> <br>
+{% endif %}
+
+{% if posts.has_previous %}
+    <a href="?page=1">First</a>
+    <a href="?page={{posts.previous_page_number}}">Previous</a>
+{% endif %}
+
+<span>{{posts.number}}</span>
+<span>of</span>
+<span>{{posts.paginator.num_pages}}</span>
+
+{% if posts.has_next %}
+    <a href="?page={{posts.next_page_number}}">Next</a>
+    <a href="?page={{posts.paginator.num_pages}}">Last</a> <br>
+{% endif %}
+
+{% endblock %}
