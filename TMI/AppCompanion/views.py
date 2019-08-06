@@ -15,7 +15,7 @@ def main(request):
     return render(request, 'Companion_main.html', {'companions': companions, 'posts':posts})
 
 #새 글쓰기 기능 
-# @login_required
+@login_required
 def new(request):
     if request.method == 'POST':
         form = CompanionPost(request.POST)
@@ -23,13 +23,13 @@ def new(request):
             post = form.save(commit = False)
             post.pub_date = timezone.now()
             
-            #####새로 추가 부분 1 ######
-            # if request.user.is_authenticated:
-            #     post.user = request.user
-            # else: 
-            #     post.user = "unkown" 
+            # ####새로 추가 부분 1 ######
+            if request.user.is_authenticated:
+                post.user = request.user
+            else: 
+                post.user = "unknown"    
             #########
-
+            
             post.save()
             return redirect('companion_main')
     else:
@@ -44,8 +44,11 @@ def search(request):
     q_city    = request.GET.get('city','')
     q_bucket_list = request.GET.get('bucket_list','')
     q_body = request.GET.get('body','')
+    q_category = request.GET.get('category','')
 
     #사용자가 입력한 값이 있는지 확인 후 순차적으로 필터링을 거침
+    if q_category:
+        qs = qs.filter(category = q_category)
     if q_country:
         qs = qs.filter(country = q_country)
     if q_city:
@@ -61,7 +64,7 @@ def search(request):
 def update(request, pk):
     companion = get_object_or_404(Companion, pk = pk)
     form = CompanionPost(request.POST, instance = companion)
-
+    
     if form.is_valid():
             form.save()
             return redirect('companion_main')
