@@ -8,6 +8,9 @@ def main(request):
     boards = Board.objects
     return render(request, 'Userboard_main.html', {'boards':boards})
 
+def warning(request):
+    return render(request, 'Userboard_warning.html')
+
 def detail(request, board_id):
     board_detail = get_object_or_404(Board, pk=board_id)
     comments = Comment.objects.filter(board_id=board_id)
@@ -15,6 +18,7 @@ def detail(request, board_id):
         comment_form=CommentForm(request.POST)
         if comment_form.is_valid():
             post = comment_form.save(commit=False)
+            post.author = request.user.username
             post.board_id = board_id
             post.save()
             return redirect('/userboard/detail/' + str(board_id))
@@ -27,11 +31,18 @@ def detail(request, board_id):
         }
         return render(request, 'Userboard_detail.html', context)
 
+@login_required
 def new(request):
     if request.method == 'POST':
         form = BoardForm(request.POST, request.FILES)
         if form.is_valid():
             post = form.save(commit=False)
+            
+            if request.user.is_authenticated:
+                post.author = request.user.username
+            else:
+                post.author = "unknown"
+
             post.save()
             return redirect('/userboard/detail/' + str(post.id))
     else:
@@ -39,26 +50,33 @@ def new(request):
         return render(request, 'Userboard_new.html', {'form':form})
 
 
+@login_required
 def update(request, board_id):
     board=get_object_or_404(Board, pk=board_id)
     if request.method == 'POST':
         form = BoardForm(request.POST, request.FILES)
         if form.is_valid():
             board.title = form.cleaned_data['title']
-            board.author = form.cleaned_data['author']
             board.text = form.cleaned_data['text']
             board.image = form.cleaned_data['image']
-            board.save()
-            return redirect('/userboard/detail/' + str(board_id))
+            if board.author == request.user.username:
+                board.save()
+                return redirect('/userboard/detail/' + str(board_id))
+            else:
+                return redirect('/userboard/warning')
     else:
         form = BoardForm(instance=board)
         return render(request, 'Userboard_update.html', {'form':form})  
 
+@login_required
 def delete(request, board_id):
     if request.method == 'POST':
         board = Board.objects.get(pk=board_id)
-        board.delete()
-        return render(request, 'Userboard_delete.html')
+        if board.author == request.user.username:
+            board.delete()
+            return render(request, 'Userboard_delete.html')
+        else:
+            return redirect('/userboard/warning')
     elif request.method == 'GET':
         return HttpResponse('잘못된 접근입니다.')
 
