@@ -30,24 +30,22 @@
     <p>{{companion.summary}}</p>
     
     {% if user.is_authenticated %} 
-
-        <!-- chat form의 action에 url 주기! -->
-        <div style = "float:left; margin-right: 10px"> <!--이부분만 스타일 줌-->  
+        {% if user.username == companion.user %}
+            <div style = "float:left; margin-right: 10px"><!--이부분만 스타일 줌-->  
+                <form action="{% url 'companion_update' companion.id %}"><!--업데이트-->
+                    <input type="submit" value = "update">
+                </form>
+            </div>
+        
+            <form action="{% url 'companion_delete' companion.id %}"><!--삭제-->
+                <input type="submit" value = "Delete">
+            </form>
+        {% else %}
+            <!-- chat form의 action에 url 주기! --> 
             <form action="">
                 <input type="submit" value = "Chat">
-            </form><br>
-        </div>
-
-        
-        <div style = "float:left; margin-right: 10px"><!--이부분만 스타일 줌-->  
-            <form action="{% url 'companion_update' companion.id %}">
-                <input type="submit" value = "update">
             </form>
-        </div>
-       
-        <form action="{% url 'companion_delete' companion.id %}">
-            <input type="submit" value = "Delete">
-        </form>
+        {% endif %}
     
     {% endif %}
     <br>
