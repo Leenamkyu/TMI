@@ -63,13 +63,23 @@ def search(request):
 
 def update(request, pk):
     companion = get_object_or_404(Companion, pk = pk)
-    form = CompanionPost(request.POST, instance = companion)
     
-    if form.is_valid():
-            form.save()
-            return redirect('companion_main')
+    if request.method == 'POST':
+        form = CompanionPost(request.POST, request.FILES)    
+        if form.is_valid():
+            companion.status = form.cleaned_data['status'] #cleaned_date : 값들을 사전형 데이터로 반환 ex) {'title': 수정값}
+            companion.category = form.cleaned_data['category']
+            companion.title = form.cleaned_data['title']
+            companion.country = form.cleaned_data['country']
+            companion.city = form.cleaned_data['city']
+            companion.bucket_list = form.cleaned_data['bucket_list']
+            companion.body = form.cleaned_data['body']
 
-    return render(request, 'Companion_new.html', {'form':form})        
+            companion.save()
+            return redirect('companion_main')
+    else:
+        form = CompanionPost(instance = companion)         
+        return render(request, 'Companion_update.html', {'form':form})        
 
 def delete(request, pk):
     companion = get_object_or_404(Companion, pk = pk)
