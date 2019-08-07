@@ -13,8 +13,28 @@
         <p>여행 국가: {{companion.country}}            도시 : {{companion.city}}</p>
         <p>버킷 리스트: {{companion.bucket_list}}</p>
         <p>{{companion.summary}}</p>
+       
        <!-- chat, update, delete 버튼 추가하기  -->
-
+       {% if user.is_authenticated %} 
+        {% if user.username == companion.user %}
+            <div style = "float:left; margin-right: 10px"><!--이부분만 스타일 줌-->  
+                <form action="{% url 'companion_update' companion.id %}"><!--업데이트-->
+                    <input type="submit" value = "update">
+                </form>
+            </div>
+        
+            <form action="{% url 'companion_delete' companion.id %}"><!--삭제-->
+                <input type="submit" value = "Delete">
+            </form>
+        {% else %}
+            <!-- chat form의 action에 url 주기! --> 
+            <form action="">
+                <input type="submit" value = "Chat">
+            </form>
+        {% endif %}
+    
+    {% endif %}
+    <br> 
     {% endfor %}
 {% endif%}
 
