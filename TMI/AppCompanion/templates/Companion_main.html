@@ -15,16 +15,18 @@
             <option value="힐링">힐링</option>
             </select>
     버킷리스트: <input type="text" name="bucket_list" autocomplete="off"> <br><br>
-    기간: <input id="datepicker1" name = "start_date" autocomplete="off"> ~ <input id="datepicker2" name= "end_date" autocomplete="off"> <!--새로추가8/9-->
-    <!-- 기간:  <input type="text" name="destination"> ~ <input type="text" name="#"><br><br> -->
+    기간: <input id="datepicker1" name = "start_date" autocomplete="off" width="200"> ~ <input  id="datepicker2"  name= "end_date" autocomplete="off" width="200" /> <!--새로추가8/9-->
     <br><br>
     <input type="submit" value="검색">
 </form>
 <script>
-    $(function () {
-        $("#datepicker1").datepicker();
-        $("#datepicker2").datepicker();
-    });
+    $('#datepicker1').datepicker({
+            uiLibrary: 'bootstrap4'
+        });
+
+    $('#datepicker2').datepicker({
+            uiLibrary: 'bootstrap4'
+        });    
     </script>
 <hr>
 
