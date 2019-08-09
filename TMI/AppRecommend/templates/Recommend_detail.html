@@ -8,5 +8,81 @@
 {{post.update}}<br>
 {{post.user}}<br>
 {{post.body}}<br>
+{% if post.user == user.username %}
+<a href="{% url 'recommend_update' post.id %}">수정</a>
+<a href="{% url 'recommend_delete' post.id %}">삭제</a>
+{% endif %}
+<input type="button" value="Like" onclick="like({{post.id}})">
+<br><span id="like_counting">{{post.like_count}}</span>명이 좋아합니다.
+
+<br><br>
+<h3>댓글</h3>
+
+<div id="comment_list">
+    {% for comment in post.comments.all %}
+    <div class="comment">
+        {{comment.author}}<br>
+        {{comment.created_date}}<br>
+        {{comment.text|linebreaks}}
+        {% if comment.author == request.user %}
+        <a href="{% url 'recommend_comment_remove' post.id comment.pk %}">삭제</a>
+        {% endif %}
+    </div>
+    {% empty %}
+        <p>No comment here yet :( </p>
+    {% endfor %}
+</div>
+
+<input type="text" id="comment" name="content" placeholder="댓글입력">
+
+{% if user.is_active %}
+<button onclick="makeComment({{post.id}})" type="submit">작성</button>
+{% else %}
+로그인이 필요합니다.
+{% endif %}
+
+
+<script>
+    function like(postID) {
+        $.ajax({
+            type: "POST",
+            url: "{% url 'recommend_like' %}",
+            data: {
+                'postID' : postID,
+                'csrfmiddlewaretoken' : '{{csrf_token}}',
+            },
+            dataType: "json",
+
+            success: function(response){
+                console.log(response.message);
+                $("#like").replaceWith('<p id="like">'+response.message+'</p>');
+                $("#like_counting").replaceWith('<span id="like_counting">'+response.num+'</span>');
+            },
+            error: function(request, status, error){
+                alert(error);
+            },
+        });
+    }
+
+    function makeComment(postID) {
+        var body = $("#comment").val();
+        $.ajax({
+            type: "POST",
+            url: "{% url 'recommend_comment' %}",
+            data: {
+                'postID' : postID,
+                'body' : body,
+                'csrfmiddlewaretoken' : '{{csrf_token}}',
+            },
+            dataType: "json",
+
+            success: function(response){
+                console.log(response.message);
+                $("#comment").val(' ')
+                $("#comment_list").append("<p>"+response.body+"</p>")
+            }
+        });
+    }
+</script>
 
 {% endblock %}
