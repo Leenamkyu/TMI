@@ -20,6 +20,13 @@ class Companion(models.Model):
     country = models.CharField(max_length = 200)
     city = models.CharField(max_length = 200)
     bucket_list = models.CharField(max_length= 200)
+    
+    ###새로추가 8/9####
+    start_date = models.DateField('start date')
+    end_date = models.DateField('end date')
+    ##################
+
+
     body = models.TextField() 
 
     def __str__(self):

@@ -6,25 +6,33 @@
 
 
 <form action="{% url 'companion_search'%}">
-    여행지: <input type="text" name="country">     
-    도시:  <input type="text" name="city"><br><br>
-    분류:  <select name="category" id=""><!--모델에 추가해야할 부분1-->
+    여행지: <input type="text" name="country" autocomplete="off">      
+    도시:  <input type="text" name="city" autocomplete="off"><br><br>
+    분류:  <select name="category" id="" autocomplete="off">
             <option value="음식">음식</option>
             <option value="액티비티">액티비티</option>
             <option value="관광">관광</option>
             <option value="힐링">힐링</option>
-           </select>
-    버킷리스트: <input type="text" name="bucket_list"> <br><br>
-    기간:  <input type="text" name="destination"> ~ <input type="text" name="#"><br><br> <!--모델에 추가해야할 부분1-->
+            </select>
+    버킷리스트: <input type="text" name="bucket_list" autocomplete="off"> <br><br>
+    기간: <input id="datepicker1" name = "start_date" autocomplete="off"> ~ <input id="datepicker2" name= "end_date" autocomplete="off"> <!--새로추가8/9-->
+    <!-- 기간:  <input type="text" name="destination"> ~ <input type="text" name="#"><br><br> -->
+    <br><br>
     <input type="submit" value="검색">
 </form>
+<script>
+    $(function () {
+        $("#datepicker1").datepicker();
+        $("#datepicker2").datepicker();
+    });
+    </script>
 <hr>
 
 <p>Total: {{companions.count}}</p>
 {% for companion in posts %}
     <h1>{{companion.title}}</h1>
-    <p>작성자:{{companion.user}}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;작성시간: {{companion.pub_date}}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-       분류: {{companion.category}}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;모집현황: {{companion.status}}</p>
+    <p>작성자:{{companion.user}}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;작성시간: {{companion.pub_date}}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;모집현황: {{companion.status}}<br>
+        분류: {{companion.category}}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;출발: {{companion.start_date|date:"Y/m/d"}} &nbsp;~ &nbsp;끝: {{companion.end_date|date:"Y/m/d"}}</p>
     <p>여행 국가: {{companion.country}}            도시 : {{companion.city}}</p>
     <p>버킷 리스트: {{companion.bucket_list}}</p>
     <p>{{companion.summary}}</p>
@@ -70,3 +78,4 @@
 {% endif %}
 
 {% endblock %}
+

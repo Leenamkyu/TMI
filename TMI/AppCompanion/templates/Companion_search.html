@@ -8,8 +8,8 @@
 {% else %}                      <!--검색결과가 있을 경우-->
     {% for companion in result_list %}
         <h1>{{companion.title}}</h1>
-        <p>작성자: {{companion.user}}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;작성시간:&nbsp;{{companion.pub_date}}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-        분류: {{companion.category}}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;모집현황: {{companion.status}}</p>
+        <p>작성자:{{companion.user}}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;작성시간: {{companion.pub_date}}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;모집현황: {{companion.status}}<br>
+            분류: {{companion.category}}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;출발: {{companion.start_date|date:"Y/m/d"}} &nbsp;~ &nbsp;끝: {{companion.end_date|date:"Y/m/d"}}</p>
         <p>여행 국가: {{companion.country}}            도시 : {{companion.city}}</p>
         <p>버킷 리스트: {{companion.bucket_list}}</p>
         <p>{{companion.summary}}</p>
