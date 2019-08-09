@@ -97,3 +97,4 @@ def searchtext(request):
         return render(request, 'Userboard_main.html', {'boards':result, 'q':q})
     else:
         return redirect('userboard_main')
+
