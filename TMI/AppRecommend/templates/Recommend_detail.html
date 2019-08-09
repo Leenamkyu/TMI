@@ -2,18 +2,28 @@
 
 {% block content %}
 
-<h1> detail </h1>
+<div class="container" style="margin-top: 20px">
+    <h2>{{post.title}}</h2>
+<div class="card">
+    <div class="card-body"> 
 
-{{post.title}}<br>
-{{post.update}}<br>
-{{post.user}}<br>
-{{post.body}}<br>
+<h5>{{post.user}}</h5>
+<p>{{post.body}}</p><br>
+<div style="text-align:right">
+<p>{{post.update}}</p></div>
+</div></div>
+<br>
+
+<div style="text-align:right">
 {% if post.user == user.username %}
-<a href="{% url 'recommend_update' post.id %}">수정</a>
-<a href="{% url 'recommend_delete' post.id %}">삭제</a>
+<button type="button" class="btn btn-outline-primary" onclick="location.href = '{% url 'recommend_update' post.id %}'">수정</button>
+<button type="submit" class="btn btn-outline-danger" onclick="location.href = '{% url 'recommend_delete' post.id %}'">삭제</button>
 {% endif %}
+</div>
+<hr>
+
 <input type="button" value="Like" onclick="like({{post.id}})">
-<br><span id="like_counting">{{post.like_count}}</span>명이 좋아합니다.
+<span id="like_counting">{{post.like_count}}</span>명이 좋아합니다.
 
 <br><br>
 <h3>댓글</h3>
