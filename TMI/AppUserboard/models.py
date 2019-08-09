@@ -10,8 +10,7 @@ class Board(models.Model):
         return self.title
     class Meta:
         ordering = ['-created']
-     
-
+ 
 class Comment(models.Model):
     board = models.ForeignKey(Board, on_delete=models.CASCADE, null=True)
     text = models.CharField(max_length=300)
@@ -19,3 +18,4 @@ class Comment(models.Model):
     created = models.DateTimeField(auto_now_add=True)
     def __str__(self):
         return self.text
+
