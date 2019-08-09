@@ -3,7 +3,6 @@ from django.db import models
 # Create your models here.
 class Companion(models.Model):
     objects = models.Manager()
-    
     user = models.CharField(max_length = 200) #사용자 추가 - 새로추가
     status = models.CharField(max_length = 100, choices = (
         ('모집중','모집중'),

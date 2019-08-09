@@ -1,12 +1,23 @@
+
+
 {% extends 'base.html' %}
 
 {% block content %}
-<form method='POST'>
-    {% csrf_token %}
-    <table>
-        {{form.as_table}}
-    </table>
-    <br>
-    <input class="btn btn-dark" type="submit" value="제출하기">
-</form>
+<div class="container">
+
+        <div class="card">
+            <div class="card-body"> 
+        <form method='POST'>
+            {% csrf_token %}
+            <table class="table table-grey" width="500">
+                {{form.as_table}}
+            </table>
+            <br>
+            <div style="text-align:right">
+            <input class="btn btn-outline-secondary" type="submit" value="제출하기">
+            </div>
+        </form>
+        </div>
+        </div>
+        </div>
 {% endblock %}

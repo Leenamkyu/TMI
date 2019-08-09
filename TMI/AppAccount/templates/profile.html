@@ -1,0 +1,9 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<p>내가 쓴 글 in 동행자게시판</p>
+{% for board in boards %}
+{{board.title}}
+<br>
+{% endfor %}
+{% endblock %}
