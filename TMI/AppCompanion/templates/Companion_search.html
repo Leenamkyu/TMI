@@ -1,44 +1,49 @@
 {% extends 'base.html' %}
 {% block content%}
-<h1>검색결과 화면</h1>
-<h3>검색 내역: {{search}}</h3>
-<hr>
-{% if result_list.count == 0 %} <!--검색결과가 없을 경우-->
-    <h1>검색결과가 없습니다.</h1>
-{% else %}                      <!--검색결과가 있을 경우-->
-    {% for companion in result_list %}
-        <h1>{{companion.title}}</h1>
-        <p>작성자:{{companion.user}}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;작성시간: {{companion.pub_date}}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;모집현황: {{companion.status}}<br>
-            분류: {{companion.category}}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;출발: {{companion.start_date|date:"Y/m/d"}} &nbsp;~ &nbsp;끝: {{companion.end_date|date:"Y/m/d"}}</p>
-        <p>여행 국가: {{companion.country}}            도시 : {{companion.city}}</p>
-        <p>버킷 리스트: {{companion.bucket_list}}</p>
-        <p>{{companion.summary}}</p>
-       
-       <!-- chat, update, delete 버튼 추가하기  -->
-       {% if user.is_authenticated %} 
-        {% if user.username == companion.user %}
-            <div style = "float:left; margin-right: 10px"><!--이부분만 스타일 줌-->  
-                <form action="{% url 'companion_update' companion.id %}"><!--업데이트-->
-                    <input type="submit" value = "update">
-                </form>
-            </div>
-        
-            <form action="{% url 'companion_delete' companion.id %}"><!--삭제-->
-                <input type="submit" value = "Delete">
-            </form>
-        {% else %}
-            <!-- chat form의 action에 url 주기! --> 
-            <form action="">
-                <input type="submit" value = "Chat">
-            </form>
-        {% endif %}
-    
-    {% endif %}
-    <br> 
-    {% endfor %}
-{% endif%}
+<div class = "container">
+    <h1>검색결과 화면</h1>
+    <h3>검색 내역: {{search}}</h3>
+    <hr>
+    {% if result_list.count == 0 %} <!--검색결과가 없을 경우-->
+        <h1>검색결과가 없습니다.</h1>
+    {% else %}                      <!--검색결과가 있을 경우-->
+        {% for companion in result_list %}
 
-<form action="{% url 'companion_main' %}">
-    <input type="submit" value="목록">
-</form>
-{% endblock %}
+            <div class = "card">
+                <div class = "card-body">
+                    <h5 class="card-title">{{companion.title}}
+                    <h6 class="card-subtitle mb-2 text-muted">작성자:{{companion.user}}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;작성시간: {{companion.pub_date}}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;모집현황: {{companion.status}}</h6><br>
+                    <p class="card-text">분류: {{companion.category}}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;출발: {{companion.start_date|date:"Y/m/d"}} &nbsp;~ &nbsp;끝: {{companion.end_date|date:"Y/m/d"}}</p>
+                    <p class="card-text">여행 국가: {{companion.country}}            도시 : {{companion.city}}</p>
+                    <p class="card-text">버킷 리스트: {{companion.bucket_list}}</p>
+                    <p class="card-text">{{companion.summary}}</p>
+                                    
+                    {% if user.is_authenticated %} 
+                        {% if user.username == companion.user %}
+                            <div style = "float:left; margin-right: 10px"><!--이부분만 스타일 줌-->  
+                                <form action="{% url 'companion_update' companion.id %}"><!--업데이트-->
+                                    <button type="submit" class = "btn btn-secondary">update</button>
+                                </form>
+                            </div>
+                        
+                            <form action="{% url 'companion_delete' companion.id %}"><!--삭제-->
+                                <button type="submit" class = "btn btn-secondary">delete</button>
+                            </form>
+                        {% else %}
+                            <!-- chat form의 action에 url 주기! --> 
+                            <form action="">
+                                <button type="submit" class = "btn btn-secondary">chat</button>
+                            </form>
+                        {% endif %}
+                    {% endif %}
+                </div>
+            </div>
+        <br> 
+        {% endfor %}
+    {% endif%}
+
+    <form action="{% url 'companion_main' %}">
+        <button type="submit" class = "btn btn-primary">목록</button>
+    </form>
+    {% endblock %}
+</div>
