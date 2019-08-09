@@ -2,7 +2,9 @@
 
 {% block content %}
 <div class = "container">
-    <h1> 동행 모집 게시판</h1> <hr>
+    <div class="container" style="margin-top: 20px">
+        <h1> 동행 모집 게시판</h1> <hr>
+    </div>
     <h3> 동행자 검색</h3>
 
     <div class= "card">
@@ -59,7 +61,7 @@
         </script>
     
     <hr>
-    <p>Total: {{companions.count}}</p>
+    <h5>Total: {{companions.count}}</h5>
     {% for companion in posts %}
         
         <div class="card">
@@ -122,9 +124,10 @@
     {% endfor %}
 
     {% if user.is_authenticated %}
-        <a href="{% url 'companion_new'%}">글 작성</a> <br>
+        <button type="button" style="margin-left: 93%" class="btn btn-outline-secondary" onclick="location.href = '{% url 'companion_new'%}';">글쓰기</button>
     {% endif %}
 
+    <br>
     {% if posts.has_previous %}
         <a href="?page=1">First</a>
         <a href="?page={{posts.previous_page_number}}">Previous</a>
